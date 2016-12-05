@@ -80,13 +80,22 @@ QStringList SerialNo::listDir(const QString &desc)
 void SerialNo::searchInTxt(const QStringList ls)
 {
 	QStringList fileinside;
+	QStringList serialnolist;
 	for (int i = 0; i < ls.size(); i++) {
 		fileinside << fileOpen(QString("%1/%2").arg(ui->SearchPath->text()).arg(ls.at(i)));
-		for (int j = 0; j < ui->pathOpen->size().height(); j++) {
-			QString s = fileinside.at(j);
-//			if (s.contains(ui->pathOpen->item(i)->text()))
-//				qDebug() << true;
+		if(fileinside.size() > 11) {
+			serialnolist << fileinside.at(11);
+			fileinside.clear();
 		}
-		qDebug() << "next";
 	}
+
+	for (int i = 0; i < serialnolist.size(); i++) {
+		QString s = serialnolist.at(i);
+		for (int j = 0; j < ui->pathOpen->count(); j++) {
+			if (s.contains(ui->pathOpen->item(j)->text()))
+			ui->pathOpen->item(j)->setForeground(Qt::green);
+		}
+	}
+	qDebug() << "next";
+
 }
